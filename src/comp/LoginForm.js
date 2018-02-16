@@ -1,9 +1,45 @@
 import React, {Component} from 'react';
-import {View,TextInput} from 'react-native';
-import {Button, Card, CardSection,Input} from './common';
+import {View,TextInput,Text} from 'react-native';
+import {Button, Card, CardSection,Input,Spinner} from './common';
+import firebase from 'firebase';
 
 export default class LoginForm extends Component{
-    state = {email : '',password : ''}
+    state = {email : '',password : '',error : '',loading : false }
+    onButtonPress(){
+        let {email,password} = this.state;
+        this.setState({error : '',loading:true})
+
+        firebase.auth().signInWithEmailAndPassword(email,password)
+            .catch(()=>{
+                firebase.auth().createUserWithEmailAndPassword(email,password)
+                    .catch(() => {
+                        this.setState({error : 'Authentication Failed'})
+                    })
+            })
+    }
+    onRefresh(){
+        this.setState({email : '',password : '',error:'',loading : false})
+    }
+
+    renderSpinner(){
+        if(this.state.loading){
+            return (
+                <CardSection>
+                <Spinner size={'small'}/>
+                </CardSection>
+            )
+        }
+        else{
+            return (
+                <CardSection>
+                <Button onPress = {this.onButtonPress.bind(this)}>
+                    Login
+                </Button>
+
+            </CardSection>
+            )
+        }
+    }
     render(){
         return(
         <Card>
@@ -22,12 +58,27 @@ export default class LoginForm extends Component{
             secureTextEntry={true}
             />
                 </CardSection>
-            <CardSection>
-                <Button>
-                    Login
-                </Button>
-            </CardSection>
+                
+                    <Text style={styles.errStyle}>{this.state.error}</Text>
+                    
+               {this.renderSpinner()}
+               <CardSection>
+            
+               <Button onPress={this.onRefresh.bind(this)}>
+                Refresh
+            </Button>
+               </CardSection>
+           
         </Card>
         )
+    }
+}
+
+const styles = {
+    errStyle :  {
+        fontSize : 20,
+        color : 'red',
+        alignItems : 'center',
+        justifyContent : 'center'
     }
 }
