@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View,TextInput,Text} from 'react-native';
+import {View,TextInput,Text, Alert} from 'react-native';
 import {Button, Card, CardSection,Input,Spinner} from './common';
 import firebase from 'firebase';
 
@@ -10,15 +10,46 @@ export default class LoginForm extends Component{
         this.setState({error : '',loading:true})
 
         firebase.auth().signInWithEmailAndPassword(email,password)
+            .then(
+                () => {this.onRefresh.bind(this)
+                    Alert.alert(
+                        'title','msg',
+                        [
+                            {text : 'OK', onPress : () => {console.log('preessed OKAy')}}
+                        ]
+                    )
+                })
             .catch(()=>{
+                console.log(1);
                 firebase.auth().createUserWithEmailAndPassword(email,password)
+                .then(
+                   
+                    () => {
+                        console.log(3);
+                        this.onRefresh.bind(this)
+                        Alert.alert(
+                            'title','msg',
+                            [
+                                {text : 'OK', onPress : () => {console.log('preessed OKAy')}}
+                            ]
+                        )
+                    })
                     .catch(() => {
-                        this.setState({error : 'Authentication Failed'})
+                        console.log(2);  
+                        this.setState({error : 'Authentication Failed',loading: false})
                     })
             })
     }
     onRefresh(){
         this.setState({email : '',password : '',error:'',loading : false})
+    }
+    alertOnSucess(title,msg){
+        Alert.alert(
+            title,msg,
+            [
+                {text : 'OK', onPress : () => {console.log('preessed OKAy')}}
+            ]
+        )
     }
 
     renderSpinner(){
@@ -63,7 +94,6 @@ export default class LoginForm extends Component{
                     
                {this.renderSpinner()}
                <CardSection>
-            
                <Button onPress={this.onRefresh.bind(this)}>
                 Refresh
             </Button>
@@ -78,6 +108,7 @@ const styles = {
     errStyle :  {
         fontSize : 20,
         color : 'red',
+        
         alignItems : 'center',
         justifyContent : 'center'
     }

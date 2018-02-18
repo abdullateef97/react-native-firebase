@@ -11,12 +11,14 @@ const Input = ({label,value,onChangeText,placeholder,secureTextEntry = false}) =
             style={textInputStyle}
             autoCorrect = {false} placeholder={placeholder}
             value = {value}
-            onChangeText={onChangeText} underlineColorAndroid={'transparent'}
-            
+            onChangeText={onChangeText} underlineColorAndroid={'transparent'}     
             />
         </View>
     )
 }
+
+
+
 
 const styles = {
     containerStyle: {
