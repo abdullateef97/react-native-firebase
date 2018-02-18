@@ -5,6 +5,7 @@ import {Header} from './src/comp/common';
 import LoginForm from './src/comp/LoginForm'
 
 export default class App extends React.Component {
+  state 
   componentWillMount() {
     firebase.initializeApp(
       {

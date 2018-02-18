@@ -12,12 +12,12 @@ export default class LoginForm extends Component{
         firebase.auth().signInWithEmailAndPassword(email,password)
             .then(
                 () => {this.onRefresh.bind(this)
-                    Alert.alert(
-                        'title','msg',
-                        [
-                            {text : 'OK', onPress : () => {console.log('preessed OKAy')}}
-                        ]
-                    )
+                    // Alert.alert(
+                    //     'title','msg',
+                    //     [
+                    //         {text : 'OK', onPress : () => {console.log('preessed OKAy')}}
+                    //     ]
+                    // )
                 })
             .catch(()=>{
                 console.log(1);
@@ -27,12 +27,12 @@ export default class LoginForm extends Component{
                     () => {
                         console.log(3);
                         this.onRefresh.bind(this)
-                        Alert.alert(
-                            'title','msg',
-                            [
-                                {text : 'OK', onPress : () => {console.log('preessed OKAy')}}
-                            ]
-                        )
+                        // Alert.alert(
+                        //     'title','msg',
+                        //     [
+                        //         {text : 'OK', onPress : () => {console.log('preessed OKAy')}}
+                        //     ]
+                        // )
                     })
                     .catch(() => {
                         console.log(2);  
